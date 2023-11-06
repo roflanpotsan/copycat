@@ -1,0 +1,45 @@
+.navbar-pfp{
+    max-width: 64px;
+    max-height: 64px;
+    margin: auto;
+}
+.navbar-profile{
+    float: right;
+}
+.logo{
+    max-width: 200px;
+    max-height: 56px;
+}
+.question-pfp{
+    max-width: 100px;
+    max-height: 100px;
+}
+.question{
+    padding: 1vh;
+}
+.question-profile-container{
+    padding: 1vh;
+}
+.question-container{
+    float: left;
+    border: 2px solid;
+    border-color: dimgrey;
+    margin: auto;
+    margin-block: 1vh 1vh;
+    writing-mode: horizontal-tb;
+}
+.tag-container{
+    background-color: dimgrey;
+    border-radius: 10px;
+    justify-content: center;
+    margin: 0px auto auto 4px;
+}
+.tag{
+    color: white;
+}
+.main-block{
+    padding: 2vh;
+}
+.side-block{
+    padding-top: 9vh;
+}

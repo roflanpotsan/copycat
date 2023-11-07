@@ -1,3 +1,10 @@
+html{
+    height: 100%;
+}
+body{
+    position: relative;
+    min-height: 100%;
+}
 .navbar-pfp{
     max-width: 64px;
     max-height: 64px;
@@ -24,8 +31,17 @@
     float: left;
     border: 2px solid;
     border-color: dimgrey;
+    border-radius: 2vh;
     margin: auto;
     margin-block: 1vh 1vh;
+    writing-mode: horizontal-tb;
+}
+.question-container-single{
+    float: left;
+    border-bottom: 2px solid;
+    border-color: dimgrey;
+    margin: auto;
+    margin-block: 6vh 1vh;
     writing-mode: horizontal-tb;
 }
 .tag-container{
@@ -42,4 +58,37 @@
 }
 .side-block{
     padding-top: 9vh;
+    padding-bottom: 18vh;
+}
+.answer-container{
+    max-width: 50vw;
+    float: right;
+    border: 2px solid;
+    border-color: dimgrey;
+    border-radius: 2vh;
+    margin: auto;
+    margin-block: 1vh 1vh;
+    writing-mode: horizontal-tb;
+}
+.delimiter-line{
+    float: left;
+    border-bottom: 2px solid;
+    border-color: dimgrey;
+    margin-block: 1vh 1vh;
+}
+.answer-form{
+    float: right;
+    margin: auto;
+    max-width: 50vw;
+}
+.footer{
+    position: absolute;
+    bottom:0;
+    width: 100%;
+}
+.content-wrap{
+    padding-bottom: 8vh;
+}
+.custom-action{
+    float: right;
 }

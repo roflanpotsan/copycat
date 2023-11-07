@@ -6,39 +6,39 @@ from django.views.decorators.http import require_http_methods
 # Create your views here.
 
 @require_http_methods(["GET"])
-def index(request, context):
-    return render(request, "index.html", {'username': context})
+def index(request):
+    return render(request, "index.html", {'username': 1})
 
 
 @require_http_methods(["GET", "POST"])
 def signup(request):
-    return HttpResponse("REGISTER AMOGUS")
+    return render(request, "signup.html", {'username': 1})
 
 
 @require_http_methods(["GET", "POST"])
 def login(request):
-    return HttpResponse("LOGIN AMOGUS")
+    return render(request, "login.html")
 
 
 @require_http_methods(["GET", "POST"])
 def ask(request):
-    return HttpResponse("ASK AMOGUS")
+    return render(request, "ask.html", {'username': 1})
 
 
 @require_http_methods(["GET"])
 def tag(request, tag_name):
-    return HttpResponse(f"TAG IS {tag_name} AMOGUS")
+    return render(request, "index.html")
 
 
 @require_http_methods(["GET"])
 def question(request, question_id):
     if question_id.isdigit():
         print("OK")
-        return HttpResponse(f"QUESTION {question_id} AMOGUS")
+        return render(request, "question.html", {'question_id': question_id})
     else:
         return HttpResponse("This question does not exist.")
 
 
 @require_http_methods(["GET"])
 def hot(request):
-    return HttpResponse("HOT AMOGUS")
+    return render(request, "index.html", {'username': 1})

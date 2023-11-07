@@ -25,7 +25,7 @@ from app import views
 # форма регистрации (URL = /signup/)
 # форма создания вопроса (URL = /ask/)
 urlpatterns = [
-    path('<str:context>', views.index, name="index_page"),
+    path('', views.index, name="index_page"),
     path('signup/', views.signup, name="signup"),
     path('login/', views.login, name="login_page"),
     path('ask/', views.ask, name="question_creation_page"),

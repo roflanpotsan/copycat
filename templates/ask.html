@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="col-xs-8 col-md-8 main-block">
+        <h1>New question</h1>
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>Title</p>
+            </div>
+            <div class="col-10">
+                <textarea class="form-control" id="title_area" rows="1" placeholder="Enter the title..."></textarea>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>Question</p>
+            </div>
+            <div class="col-10">
+                <textarea class="form-control" id="question_area" rows="10" placeholder="Enter the question..."></textarea>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-2">
+                <p>Tags</p>
+            </div>
+            <div class="col-10">
+                <textarea class="form-control" id="tags_area" rows="1" placeholder="Enter the tags..."></textarea>
+            </div>
+        </div>
+        <button class="btn btn-outline-success custom-action">Ask</button>
+    </div>
+{% endblock %}

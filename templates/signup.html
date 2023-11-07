@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="col-xs-6 col-md-6 main-block">
+        <h1>Signup</h1>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="login" placeholder="Login">
+            <label for="login">Username</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="email" placeholder="Email">
+            <label for="email">Email</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" id="display_name" placeholder="@display_name">
+            <label for="display_name">Display name</label>
+        </div>
+        <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="password" placeholder="Password">
+            <label for="password">Password</label>
+        </div>
+                <div class="form-floating mb-3">
+            <input type="password" class="form-control" id="confirm_password" placeholder="Password confirmation">
+            <label for="confirm_password">Confirm password</label>
+        </div>
+        <div style="margin-top: 2vh">
+            <button class="btn btn-outline-success custom-action">Signup</button>
+        </div>
+    </div>
+{% endblock %}

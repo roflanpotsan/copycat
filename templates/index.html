@@ -1,6 +1,6 @@
-{% extends "base.html" %}
+{% extends 'base.html' %}
+{% load static %}
 {% block content %}
-    {% load static %}
     <div class="d-flex flex-row" style="margin:auto">
         <h1 class="me-2">New questions</h1>
         <a href="#">Hot questions</a>
@@ -23,7 +23,7 @@
         </div>
         <div class="col-xs-10 col-md-10 question">
             <div class="row" style="margin: auto">
-                <a href="#">Lorem {{i}}</a>
+                <h4><a href="#">Lorem {{i}}</a></h4>
             </div>
             <div class="row" style="margin: auto">
                 <p>Duis venenatis libero eget mauris varius rutrum. Donec fermentum lorem a elit pharetra. Duis venenatis libero eget mauris varius rutrum. Donec fermentum lorem a elit pharetraDuis venenatis libero eget mauris varius rutrum. Donec fermentum lorem a elit pharetraDuis venenatis libero eget mauris varius rutrum. Donec fermentum lorem a elit pharetraDuis venenatis libero eget mauris varius rutrum. Donec fermentum lorem a elit pharetraDuis venenatis libero eget mauris varius rutrum. Donec fermentum lorem a elit pharetra...</p>
@@ -32,7 +32,7 @@
                 <div class="col-xs-4 col-md-4">
                     <a href="#">Answer ({{i}})</a>
                 </div>
-                <div class="col-xs-2 col-md-2">
+                <div class="col-xs-1 col-md-1">
                     <p>Tags:</p>
                 </div>
                 {% for tag in 'abcdfw'|make_list %}

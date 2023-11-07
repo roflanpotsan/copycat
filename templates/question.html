@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+        <div class="row question-container-single">
+        <div class="col-xs-2 col-md-2 question-profile-container">
+            <div class="row justify-content-md-center" style="margin:auto">
+                <img class="question-pfp" src="{% static 'img/pfp-default.png' %}" alt="question-pfp">
+            </div>
+            <div class="row text-center" style="margin:auto;padding:1vh">
+                <div class="btn-group" role="group" aria-label="Rating Buttons">
+                  <button type="button" class="btn btn-outline-success">+</button>
+                  <button type="button" class="btn btn-outline-danger">-</button>
+                </div>
+            </div>
+            <div class="row text-center" style="margin:auto;padding:1vh">
+                <p>123</p>
+            </div>
+        </div>
+        <div class="col-xs-10 col-md-10 question">
+            <div class="row" style="margin: auto">
+                <h4><a href="#">Question {{question_id}}</a></h4>
+            </div>
+            <div class="row" style="margin: auto">
+                <p>Duis venenatis libero eget mauris varius rutrum. Donec fermentum lorem a elit pharetra. Duis venenatis libero eget mauris varius rutrum. Donec fermentum lorem a elit pharetraDuis venenatis libero eget mauris varius rutrum. Donec fermentum lorem a elit pharetraDuis venenatis libero eget mauris varius rutrum. Donec fermentum lorem a elit pharetraDuis venenatis libero eget mauris varius rutrum. Donec fermentum lorem a elit pharetraDuis venenatis libero eget mauris varius rutrum. Donec fermentum lorem a elit pharetra...</p>
+            </div>
+            <div class="row" style="margin: auto">
+                <div class="col-xs-1 col-md-1">
+                    <p>Tags:</p>
+                </div>
+                {% for tag in 'abcdfw'|make_list %}
+                <div class="col tag-container">
+                    <a class="tag nav-link" href="#">{{tag}}</a>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+        </div>
+        {% for i in '01234567'|make_list %}
+        <div class="row answer-container">
+            <div class="col-xs-2 col-md-2 question-profile-container">
+                <div class="row justify-content-md-center" style="margin:auto">
+                    <img class="question-pfp" src="{% static 'img/pfp-default.png' %}" alt="question-pfp">
+                </div>
+                <div class="row text-center" style="margin:auto;padding:1vh">
+                    <div class="btn-group" role="group" aria-label="Rating Buttons">
+                      <button type="button" class="btn btn-outline-success">+</button>
+                      <button type="button" class="btn btn-outline-danger">-</button>
+                    </div>
+                </div>
+                <div class="row text-center" style="margin:auto;padding:1vh">
+                    <p>{{i}}</p>
+                </div>
+            </div>
+            <div class="col-xs-10 col-md-10 question">
+                <div class="row" style="margin: auto">
+                    <h4><a href="#">Answer {{i}}</a></h4>
+                </div>
+                <div class="row" style="margin: auto">
+                    <p>Donec fermentum lorem a elit pharetraDuis venenatis libero eget mauris varius rutrum. Donec fermentum lorem a elit pharetraDuis venenatis libero eget mauris varius rutrum. Donec fermentum lorem a elit pharetraDuis venenatis libero eget mauris varius rutrum. Donec fermentum lorem a elit pharetraDuis venenatis libero eget mauris varius rutrum. Donec fermentum lorem a elit pharetra...</p>
+                </div>
+                <div class="row" style="margin: auto">
+                    {% if i == '3' %}
+                        <img class="question-pfp" src="{% static 'img/tick.png' %}">
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+        <div class="col-12 delimiter-line" style="opacity: 0"></div>
+        <div class="row" style="float: right">
+          <ul class="pagination">
+            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+            <li class="page-item"><a class="page-link" href="#">1</a></li>
+            <li class="page-item"><a class="page-link" href="#">2</a></li>
+            <li class="page-item"><a class="page-link" href="#">3</a></li>
+            <li class="page-item"><a class="page-link" href="#">...</a></li>
+            <li class="page-item"><a class="page-link" href="#">10</a></li>
+            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+          </ul>
+        </div>
+        <div class="col-12 delimiter-line"></div>
+        <div class="col-12 answer-form">
+                <div class="mb-3">
+                  <textarea class="form-control" id="answer_area" rows="3" placeholder="Type your suggestions here..."></textarea>
+                </div>
+                <button type="button" class="btn btn-outline-success custom-action">Post answer</button>
+        </div>
+{% endblock %}

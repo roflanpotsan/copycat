@@ -4,82 +4,67 @@
     {% load static %}
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    {% block title %}
-    <title>@Copycat</title>
-    {% endblock %}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    {% block title %}{% endblock %}
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
     <link rel="stylesheet" href="{% static 'css/basic.css' %}">
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.png' %}"/>
+    </head>
+    <body>
     <nav class="navbar sticky-top bg-light">
         <div class="container-fluid">
-            <div class="col-xs-2 col-md-3">
-                <a href="/"><img class="logo" src="{% static 'img/logo.png'%}" alt="logo"></a>
+            <div class="navbar-brand">
+                <a href="/"><img class="logo" src="{% static 'img/logo.png' %}" alt="logo"></a>
             </div>
-            <form class="d-flex col-xs-4 col-md-3" role="search">
+            <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
                 <button class="btn btn-outline-dark" type="submit">Search</button>
             </form>
-            <div class="col-xs-1 col-md-1">
-                <a href="/ask">
-                    <button class="btn btn-outline-dark">Ask</button>
-                </a>
-            </div>
-            <div class="navbar-profile">
-                <div class="row" style="margin: auto">
-                    {% if request.user.is_authenticated %}
-                    <div class="col-xs-4 col-md-4">
-                        <img class="navbar-pfp" src="{% static 'img/pfp-default.png'%}" alt="pfp">
-                    </div>
-                    <div class="col-xs-8 col-md-8">
-                        <div class="row" style="margin: auto">
-                            <p>{{ username }}</p>
-                        </div>
-                        <div class="row" style="margin: auto">
-                            <div class="col-xs-6 col-md-6">
-                                <a class="nav-link text-body-secondary" href="#">Settings</a>
-                            </div>
-                            <div class="col-xs-6 col-md-6">
-                                <a class="nav-link text-body-secondary" href="/logout">Logout</a>
-                            </div>
-                        </div>
-                    </div>
-                    {% else %}
-                    <div class="col-xs-6 col-md-6">
-                        <a class="nav-link text-body-secondary" href="/login">Login</a>
-                    </div>
-                    <div class="col-xs-6 col-md-6">
-                        <a class="nav-link text-body-secondary" href="/signup">Signup</a>
-                    </div>
-                    {% endif %}
-                </div>
-            </div>
+            <ul class="navbar-nav d-flex flex-row me-1 align-items-center">
+                {% if request.user.is_authenticated %}
+                <li>
+                    <a class="me-4" href="/ask">
+                        <button class="btn btn-outline-success">Ask</button>
+                    </a>
+                </li>
+                <li>
+                    <a href="/user/{{request.user.profile.display_name}}">
+                    <img class="navbar-pfp rounded nav-item me-4" src="{{request.user.profile.profile_picture.url}}"/>
+                    </a>
+                </li>
+                <li>
+                    <ul class="navbar-nav d-flex flex-row me-1">
+                        <li>
+                            <p>@{{request.user.profile.display_name}}</p>
+                        </li>
+                    </ul>
+                    <uL class="navbar-nav d-flex flex-row me-1">
+                        <li>
+                            <a class="nav-link me-2" href="/settings">Settings</a>
+                        </li>
+                        <li>
+                            <a class="nav-link me-2" href="/logout">Logout</a>
+                        </li>
+                    </uL>
+                </li>
+                {% else %}
+                <li>
+                    <a class="nav-link me-2" href="/login">Login</a>
+                </li>
+                <li>
+                    <a class="nav-link me-2" href="/signup">Signup</a>
+                </li>
+                {% endif %}
+            </ul>
         </div>
     </nav>
-    </head>
-    <body>
     <div class="content-wrap">
     <div class="row" style="margin: auto">
         <div class="col-xs-8 col-md-8 main-block">
+            {% block page_title %}{% endblock %}
             {% block content %}{% endblock %}
         </div>
         <div class="col-xs-4 col-md-4 side-block">
-            <div class="row" style="margin: auto">
-            {% block popular_tags %}
-                <h3>Most popular tags</h3>
-                {% for tag in 'abcdef'|make_list %}
-                    <div class="col tag-container">
-                        <a class="tag nav-link" href="#">{{tag}}</a>
-                    </div>
-                {% endfor %}
-            {% endblock %}
-            </div>
-            <div class="row" style="margin: auto">
-            {% block helpful_users %}
-                <h3>Most helpful users</h3>
-                {% for i in '0123456789'|make_list %}
-                    <a href="#"> User {{i}}</a>
-                {% endfor %}
-            {% endblock %}
-            </div>
+            {% block side-content %}{% endblock %}
         </div>
     </div>
     {% block pagination %}{% endblock %}
@@ -90,5 +75,6 @@
         </div>
     </footer>
     </body>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <script src="{% static 'js/bootstrap.js' %}"></script>
+    <script src="{% static 'js/form-validation.js' %}"></script>
 </html>

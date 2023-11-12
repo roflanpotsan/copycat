@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}
+<title>Settings</title>
+{% endblock %}
+{% block content %}
+<div class="col-xs-8 col-md-8 main-block">
+        {% if request.user.is_authenticated %}
+        <h1>Settings: {{ username }}</h1>
+        <div class="row mb-3">
+            <div class="col-xs-3 col-md-3">
+                <p>Display name:</p>
+            </div>
+            <div class="col-xs-4 col-md-4">
+                <input type="text" class="form-control" id="display_name" maxlength="16" placeholder='{{request.user.profile.display_name}}'/>
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-xs-3 col-md-3">
+                <p>Profile picture:</p>
+            </div>
+            <div class="col-xs-4 col-md-4">
+                <img class="question-pfp" src="{{request.user.profile.profile_picture.url}}">
+            </div>
+        </div>
+        <div class="row mb-3">
+            <div class="col-xs-3 col-md-3">
+                <p>Upload:</p>
+            </div>
+            <div class="col-xs-6 col-md-6">
+                <input class="form-control form-control-md" id="upload_form" type="file"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-3" style="margin-top: 2vh">
+                <button class="btn btn-outline-success">Update</button>
+            </div>
+        </div>
+        {% else %}
+        <h1>Please log in.</h1>
+        {% endif %}
+</div>
+{% endblock %}

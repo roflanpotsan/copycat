@@ -1,17 +1,29 @@
 {% extends 'base.html' %}
+{% block title %}
+<title>Login</title>
+{% endblock %}
 {% block content %}
-    <div class="col-xs-6 col-md-6 main-block">
+    <form class="col-xs-6 col-md-6 main-block">
         <h1>Login</h1>
+        <div class="alert alert-danger" id="error-box" style="display: none">
+            <p>Error message.</p>
+        </div>
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="login" placeholder="Login">
+            <input type="text" class="form-control" id="login" placeholder="Login" onblur="validateTextBox('login')">
             <label for="login">Login</label>
+            <div class="invalid-feedback">
+                Please enter login.
+            </div>
         </div>
         <div class="form-floating">
-            <input type="password" class="form-control" id="password" placeholder="Password">
+            <input type="password" class="form-control" id="password" placeholder="Password" onblur="validateTextBox('password')">
             <label for="password">Password</label>
+            <div class="invalid-feedback">
+                Please enter password.
+            </div>
         </div>
         <div style="margin-top: 2vh">
-            <button class="btn btn-outline-success custom-action">Login</button>
+            <button type="submit" class="btn btn-outline-success custom-action">Login</button>
         </div>
-    </div>
+    </form>
 {% endblock %}

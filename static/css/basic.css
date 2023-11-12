@@ -6,66 +6,66 @@ body{
     min-height: 100%;
 }
 .navbar-pfp{
+    min-width: 64px;
+    min-height: 64px;
     max-width: 64px;
     max-height: 64px;
-    margin: auto;
 }
-.navbar-profile{
-    float: right;
+.navbar-icon{
+    max-width: 32px;
+    max-height: 32px;
 }
 .logo{
     max-width: 200px;
     max-height: 56px;
 }
 .question-pfp{
-    max-width: 100px;
+    min-height: 100px;
+    min-width: 100px;
     max-height: 100px;
+    max-width: 100px;
+    padding: 10px;
+    border-radius: 20px;
 }
 .question{
-    padding: 1vh;
+    padding-top: 3vh;
 }
 .question-profile-container{
     padding: 1vh;
+    padding-top: 2vh;
+    width: fit-content;
+    block-size: fit-content;
 }
 .question-container{
-    float: left;
     border: 2px solid;
     border-color: dimgrey;
-    border-radius: 2vh;
     margin: auto;
     margin-block: 1vh 1vh;
-    writing-mode: horizontal-tb;
+    writing-mode: horizontal;
 }
 .question-container-single{
-    float: left;
     border-bottom: 2px solid;
     border-color: dimgrey;
     margin: auto;
     margin-block: 6vh 1vh;
-    writing-mode: horizontal-tb;
+    writing-mode: horizontal;
 }
 .tag-container{
-    background-color: dimgrey;
-    border-radius: 10px;
-    justify-content: center;
-    margin: 0px auto auto 4px;
-}
-.tag{
-    color: white;
+    border: 2px solid;
+    margin: 0.5vw;
+    width: fit-content;
+    block-size: fit-content;
 }
 .main-block{
     padding: 2vh;
 }
 .side-block{
-    padding-top: 9vh;
-    padding-bottom: 18vh;
+    padding-top: 10vh;
 }
 .answer-container{
-    max-width: 50vw;
-    float: right;
-    border: 2px solid;
+    border: 2px;
+    border-style: solid;
     border-color: dimgrey;
-    border-radius: 2vh;
     margin: auto;
     margin-block: 1vh 1vh;
     writing-mode: horizontal-tb;
@@ -91,4 +91,14 @@ body{
 }
 .custom-action{
     float: right;
+}
+.tag-block{
+    margin: auto;
+}
+.user-block{
+    margin: auto;
+}
+.rating-btns{
+    margin: auto;
+    max-width: 100px;
 }

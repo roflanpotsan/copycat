@@ -1,12 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
 from uuid import uuid4
-from copycat.settings import os, Path
+from copycat.settings import os, Path, FAST_SIDE_BLOCK
 from datetime import date, timedelta
 from django.utils import timezone
 
 # Create your models here.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 
 class ProfileManager(models.Manager):
@@ -15,6 +16,11 @@ class ProfileManager(models.Manager):
                                                                    timezone.now()]).order_by('-rating')
         answers = Answer.objects.filter(date_submitted__range=[timezone.now() - timedelta(days=7),
                                                                timezone.now()]).order_by('-rating')
+        if FAST_SIDE_BLOCK:
+            profiles = []
+            profiles.extend([question.author for question in questions[:5]])
+            profiles.extend([answer.author for answer in answers[:6]])
+            return profiles
         profiles = {}
         for question in questions:
             if not profiles.get(question.author):
@@ -34,6 +40,9 @@ class TagManager(models.Manager):
     def top_last_week(self):
         questions = Question.objects.filter(date_submitted__range=[timezone.now() - timedelta(days=7),
                                                                    timezone.now()]).order_by('-rating')
+        if FAST_SIDE_BLOCK:
+            tags = [tag for tag in Tag.objects.order_by('-uses')[:10]]
+            return tags
         tags = {}
         for question in questions:
             for tag in question.tags.all():
@@ -85,7 +94,7 @@ class Tag(models.Model):
 
 class Question(models.Model):
     title = models.CharField(max_length=100, null=True)
-    content = models.CharField(max_length=600, null=True)
+    content = models.CharField(max_length=1000, null=True)
     rating = models.BigIntegerField(null=True)
     date_submitted = models.DateTimeField(auto_now=True, null=True)
 
@@ -96,7 +105,7 @@ class Question(models.Model):
 
 
 class Answer(models.Model):
-    content = models.CharField(max_length=400, null=True)
+    content = models.CharField(max_length=500, null=True)
     is_correct = models.BooleanField(default=False)
     rating = models.BigIntegerField(null=True)
     date_submitted = models.DateTimeField(auto_now=True, null=True)

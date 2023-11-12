@@ -4,6 +4,8 @@ from faker import Faker
 from random import choice, randrange, choices
 from uuid import uuid4
 from django.contrib.auth.hashers import make_password
+from django.utils import timezone
+from datetime import date, timedelta
 
 fake = Faker()
 
@@ -47,8 +49,8 @@ class Command(BaseCommand):
         profiles = Profile.objects.all()
         tags = [
             Tag(
-                text=fake.sentence(nb_words=1)[:-1],
-                uses=randrange(1, ratio)
+                text=fake.sentence(nb_words=1)[:12][:-1],
+                uses=randrange(1, ratio * 10)
             ) for _ in range(ratio)
         ]
         Tag.objects.bulk_create(tags)
@@ -56,7 +58,7 @@ class Command(BaseCommand):
         questions = [
             Question(
                 title=fake.sentence(nb_words=6),
-                content=fake.paragraph(nb_sentences=10),
+                content=fake.paragraph(nb_sentences=9),
                 rating=randrange(0, ratio),
                 author=choice(profiles),
             ) for _ in range(ratio * 10)
@@ -68,7 +70,7 @@ class Command(BaseCommand):
             question.tags.set(tags_)
         answers = [
             Answer(
-                content=fake.paragraph(nb_sentences=4),
+                content=fake.paragraph(nb_sentences=5),
                 rating=randrange(0, ratio),
                 author=choice(profiles),
                 question=choice(questions)

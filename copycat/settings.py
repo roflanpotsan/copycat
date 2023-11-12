@@ -126,10 +126,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-# STATICFILES_DIRS = [
-#     BASE_DIR / 'static',
-# ]
-STATIC_ROOT = BASE_DIR / 'static'
+if DEBUG:
+    STATICFILES_DIRS = [
+        BASE_DIR / 'static',
+    ]
+else:
+    STATIC_ROOT = BASE_DIR / 'static'
 STATIC_URL = '/static/'
 MEDIA_ROOT = BASE_DIR / 'uploads'
 MEDIA_URL = '/uploads/'
@@ -137,3 +139,5 @@ MEDIA_URL = '/uploads/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+FAST_SIDE_BLOCK = True  # change this for genuine side-block

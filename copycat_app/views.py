@@ -8,6 +8,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth import logout as log_out
 # Create your views here.
 
+# temporary one-time side-block generation
 top_users = Profile.objects.top_last_week()
 top_tags = Tag.objects.top_last_week()
 

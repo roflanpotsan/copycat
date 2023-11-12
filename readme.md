@@ -8,7 +8,7 @@ docker-compose up
 
 cd ../
 python manage.py makemigrations
-python manage.py mirgate
+python manage.py migrate
 ```
 Заполнение БД данными:
 ```

@@ -20,4 +20,4 @@ python manage.py runserver
 ```
 
 <h2>Main Page</h2>
-![layout](./layout.png)
+![layout](https://github.com/roflanpotsan/copycat/blob/main/layout.png)

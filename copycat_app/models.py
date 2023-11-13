@@ -113,3 +113,24 @@ class Answer(models.Model):
     question = models.ForeignKey(Question, on_delete=models.CASCADE, null=True, related_name='answers')
 
     objects = AnswerManager()
+
+
+class QuestionRating(models.Model):
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    type = models.BooleanField(null=True)  # 0 - negative; 1 - positive
+
+    class Meta:
+        unique_together = ['user', 'question']
+
+
+class AnswerRating(models.Model):
+    answer = models.ForeignKey(Question, on_delete=models.CASCADE,)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    type = models.BooleanField(null=True)  # 0 - negative; 1 - positive
+
+    class Meta:
+        unique_together = ['user', 'answer']
+
+
+

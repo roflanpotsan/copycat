@@ -6,6 +6,7 @@ from uuid import uuid4
 from django.contrib.auth.hashers import make_password
 from django.utils import timezone
 from datetime import date, timedelta
+from tqdm import tqdm
 
 fake = Faker()
 
@@ -18,24 +19,26 @@ class Command(BaseCommand):
 
     def handle(self, *args, **kwargs):
         ratio = kwargs["ratio"]
-        print(ratio)
+        print(f"STARTING DB FILL-UP - ratio:{ratio}")
         users = [
             User(
                 username=uuid4().hex,
                 password=make_password(fake.slug()),
                 email=fake.safe_email()
-            ) for _ in range(ratio)
+            ) for _ in tqdm(range(ratio))
         ]
-        users.append(
-            User(
-                username="admin",
-                password=make_password("insecurepassword"),
-                is_superuser=True,
-                is_staff=True,
-                is_active=True
+        if not User.objects.filter(username="admin").first():
+            users.append(
+                User(
+                    username="admin",
+                    password=make_password("insecurepassword"),
+                    is_superuser=True,
+                    is_staff=True,
+                    is_active=True
+                )
             )
-        )
         User.objects.bulk_create(users)
+        print("FINISHED USER CREATION")
         users = User.objects.all()
         profiles = [
             Profile(
@@ -43,17 +46,19 @@ class Command(BaseCommand):
                 display_name=fake.user_name()[:10] + uuid4().hex[:6],
                 rating=randrange(0, ratio),
                 profile_picture=f'profile_pictures/{randrange(1,10)}.jpeg'
-            ) for user in users
+            ) for user in tqdm(users)
         ]
         Profile.objects.bulk_create(profiles)
+        print("FINISHED PROFILE CREATION")
         profiles = Profile.objects.all()
         tags = [
             Tag(
                 text=fake.sentence(nb_words=1)[:12][:-1].lower(),
                 uses=randrange(1, ratio * 10)
-            ) for _ in range(ratio)
+            ) for _ in tqdm(range(ratio))
         ]
         Tag.objects.bulk_create(tags)
+        print("FINISHED TAG CREATION")
         tags = Tag.objects.all()
         questions = [
             Question(
@@ -61,9 +66,10 @@ class Command(BaseCommand):
                 content=fake.paragraph(nb_sentences=9),
                 rating=randrange(0, ratio),
                 author=choice(profiles),
-            ) for _ in range(ratio * 10)
+            ) for _ in tqdm(range(ratio * 10))
         ]
         Question.objects.bulk_create(questions)
+        print("FINISHED QUESTION CREATION")
         questions = Question.objects.all()
         for question in questions:
             tags_ = choices(tags, k=4)
@@ -74,8 +80,9 @@ class Command(BaseCommand):
                 rating=randrange(0, ratio),
                 author=choice(profiles),
                 question=choice(questions)
-            ) for _ in range(ratio * 100)
+            ) for _ in tqdm(range(ratio * 100))
         ]
         Answer.objects.bulk_create(answers)
+        print("FINISHED ANSWER CREATION")
         answers = Answer.objects.all()
 

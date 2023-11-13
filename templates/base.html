@@ -13,7 +13,7 @@
     <nav class="navbar sticky-top bg-light">
         <div class="container-fluid">
             <div class="navbar-brand">
-                <a href="/"><img class="logo" src="{% static 'img/logo.png' %}" alt="logo"></a>
+                <a href="{% url 'index_page' %}"><img class="logo" src="{% static 'img/logo.png' %}" alt="logo"></a>
             </div>
             <form class="d-flex" role="search">
                 <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
@@ -22,12 +22,12 @@
             <ul class="navbar-nav d-flex flex-row me-1 align-items-center">
                 {% if request.user.is_authenticated %}
                 <li>
-                    <a class="me-4" href="/ask">
+                    <a class="me-4" href="{% url 'question_creation_page' %}">
                         <button class="btn btn-outline-success">Ask</button>
                     </a>
                 </li>
                 <li>
-                    <a href="/user/{{request.user.profile.display_name}}">
+                    <a href="{% url 'user_profile_page' request.user.profile.display_name %}">
                     <img class="navbar-pfp rounded nav-item me-4" src="{{request.user.profile.profile_picture.url}}"/>
                     </a>
                 </li>
@@ -39,19 +39,19 @@
                     </ul>
                     <uL class="navbar-nav d-flex flex-row me-1">
                         <li>
-                            <a class="nav-link me-2" href="/settings">Settings</a>
+                            <a class="nav-link me-2" href="{% url 'settings_page' %}">Settings</a>
                         </li>
                         <li>
-                            <a class="nav-link me-2" href="/logout">Logout</a>
+                            <a class="nav-link me-2" href="{% url 'logout_page' %}">Logout</a>
                         </li>
                     </uL>
                 </li>
                 {% else %}
                 <li>
-                    <a class="nav-link me-2" href="/login">Login</a>
+                    <a class="nav-link me-2" href="{% url 'login_page' %}">Login</a>
                 </li>
                 <li>
-                    <a class="nav-link me-2" href="/signup">Signup</a>
+                    <a class="nav-link me-2" href="{% url 'signup_page' %}">Signup</a>
                 </li>
                 {% endif %}
             </ul>
@@ -67,7 +67,6 @@
             {% block side-content %}{% endblock %}
         </div>
     </div>
-    {% block pagination %}{% endblock %}
     </div>
     <footer class="footer py-3 bg-light">
         <div class="container text-center">

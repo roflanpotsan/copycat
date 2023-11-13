@@ -4,14 +4,14 @@
         <h3>Most popular tags</h3>
         {% for tag in top_tags %}
             <div class="col-xs-4 col-md-4 tag-container text-center rounded">
-                <a class="nav-link" href="/tag/{{tag.text}}">{{tag.text}}</a>
+                <a class="nav-link" href="{% url 'questions_with_tag_page' tag.text %}">{{tag.text}}</a>
             </div>
         {% endfor %}
     </div>
     <div class="row user-block">
         <h3>Most helpful users</h3>
         {% for user in top_users %}
-            <a class="text-muted link-underline link-underline-opacity-0" href="/user/{{user.display_name}}">@{{user.display_name}}</a>
+            <a class="text-muted link-underline link-underline-opacity-0" href="{% url 'user_profile_page' user.display_name %}">@{{user.display_name}}</a>
         {% endfor %}
     </div>
 {% endblock %}

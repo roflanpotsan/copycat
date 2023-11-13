@@ -65,7 +65,6 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'copycat_app.context_processors.side_content',
-                'copycat_app.context_processors.current_path',
                 'copycat_app.context_processors.index_title'
             ],
         },

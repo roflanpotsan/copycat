@@ -1,0 +1,1 @@
+cat migration-fix.sql | docker exec -i copycat_db /usr/bin/mysql -uroot -pinsecurepassword copycat_db

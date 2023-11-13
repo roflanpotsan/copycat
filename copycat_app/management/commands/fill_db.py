@@ -49,7 +49,7 @@ class Command(BaseCommand):
         profiles = Profile.objects.all()
         tags = [
             Tag(
-                text=fake.sentence(nb_words=1)[:12][:-1],
+                text=fake.sentence(nb_words=1)[:12][:-1].lower(),
                 uses=randrange(1, ratio * 10)
             ) for _ in range(ratio)
         ]

@@ -7,7 +7,9 @@
         <div class="row question-container-single">
         <div class="col-xs-2 col-md-2 question-profile-container text-center container">
             <div class="row">
+                <a href="/user/{{question.author.display_name}}">
                 <img class="question-pfp mx-auto d-block" src='{{question.author.profile_picture.url}}' alt="question-pfp">
+                </a>
             </div>
             <div class="row">
                 <div class="btn-group rating-btns" role="group" aria-label="Rating Buttons">

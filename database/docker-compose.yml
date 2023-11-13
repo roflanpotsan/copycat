@@ -1,6 +1,8 @@
 version: "3.9"
 services:
   database:
+    container_name: 'copycat_db'
     build: .
     ports:
       - "3306:3306"
+    image: 'copycat_db'

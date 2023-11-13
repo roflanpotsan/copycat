@@ -9,7 +9,6 @@ from django.utils import timezone
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-
 class ProfileManager(models.Manager):
     def top_last_week(self):
         questions = Question.objects.filter(date_submitted__range=[timezone.now() - timedelta(days=7),

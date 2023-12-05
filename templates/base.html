@@ -42,13 +42,13 @@
                             <a class="nav-link me-2" href="{% url 'settings_page' %}">Settings</a>
                         </li>
                         <li>
-                            <a class="nav-link me-2" href="{% url 'logout_page' %}">Logout</a>
+                            <a class="nav-link me-2" href="{% url 'logout_page' %}?continue={{request.path}}">Logout</a>
                         </li>
                     </uL>
                 </li>
                 {% else %}
                 <li>
-                    <a class="nav-link me-2" href="{% url 'login_page' %}">Login</a>
+                    <a class="nav-link me-2" href="{% url 'login_page' %}?continue={{request.path}}">Login</a>
                 </li>
                 <li>
                     <a class="nav-link me-2" href="{% url 'signup_page' %}">Signup</a>

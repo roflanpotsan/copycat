@@ -1,27 +1,12 @@
 {% extends 'base.html' %}
+{% load bootstrap5 %}
 {% block title %}
 <title>Login</title>
 {% endblock %}
 {% block content %}
-    <form class="col-xs-5 col-md-5 main-block">
-        <h1>Login</h1>
-        <div class="alert alert-danger" id="error-box" style="display: none">
-            <p>Error message.</p>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="login" placeholder="Login" onblur="validateTextBox('login')">
-            <label for="login">Login</label>
-            <div class="invalid-feedback">
-                Please enter login.
-            </div>
-        </div>
-        <div class="form-floating">
-            <input type="password" class="form-control" id="password" placeholder="Password" onblur="validateTextBox('password')">
-            <label for="password">Password</label>
-            <div class="invalid-feedback">
-                Please enter password.
-            </div>
-        </div>
+    <form class="col-xs-5 col-md-5 main-block" method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
         <div style="margin-top: 2vh">
             <button type="submit" class="btn btn-outline-success custom-action">Login</button>
         </div>

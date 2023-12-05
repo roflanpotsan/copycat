@@ -1,50 +1,15 @@
 {% extends 'base.html' %}
+{% load bootstrap5 %}
 {% block title %}
 <title>Signup</title>
 {% endblock %}
 {% block content %}
-    <div class="col-xs-5 col-md-5 main-block">
+    <form class="col-xs-5 col-md-5 main-block" method="post">
         <h1>Signup</h1>
-        <div class="alert alert-danger" id="error-box" style="display: none">
-            <p>Error message.</p>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control invalid-input" id="username" maxlength="16" placeholder="Username" onblur="validateTextBox('username')">
-            <label for="username">Username</label>
-            <div class="invalid-feedback">
-                Please enter username.
-            </div>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="email" class="form-control" id="email" pattern="[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}$" placeholder="Email" onblur="validateTextBox('email')">
-            <label for="email">Email</label>
-            <div class="invalid-feedback">
-                Please enter a valid email.
-            </div>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="display_name" maxlength="16" placeholder="@display_name" onblur="validateTextBox('display_name')">
-            <label for="display_name">Display name</label>
-            <div class="invalid-feedback">
-                Please enter display name.
-            </div>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="password" maxlength="32" placeholder="Password" onblur="validateTextBox('password')">
-            <label for="password">Password</label>
-            <div class="invalid-feedback">
-                Please enter password.
-            </div>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="password" class="form-control" id="confirm_password" maxlength="32" placeholder="Password confirmation" onblur="validateTextBox('confirm_password')">
-            <label for="confirm_password">Confirm password</label>
-            <div class="invalid-feedback">
-                Please enter password again.
-            </div>
-        </div>
+        {% csrf_token %}
+        {% bootstrap_form form %}
         <div style="margin-top: 2vh">
             <button type="submit" class="btn btn-outline-success custom-action">Signup</button>
         </div>
-    </div>
+    </form>
 {% endblock %}

@@ -1,5 +1,6 @@
 {% extends 'base_side_content.html' %}
 {% load static %}
+{% load bootstrap5 %}
 {% block title %}
 <title>{{question.title}}</title>
 {% endblock %}
@@ -11,12 +12,14 @@
                 <img class="question-pfp mx-auto d-block" src='{{question.author.profile_picture.url}}' alt="question-pfp">
                 </a>
             </div>
+            {% if request.user.is_authenticated %}
             <div class="row">
                 <div class="btn-group rating-btns" role="group" aria-label="Rating Buttons">
                   <button type="button" class="btn btn-outline-success">+</button>
                   <button type="button" class="btn btn-outline-danger">-</button>
                 </div>
             </div>
+            {% endif %}
             <div class="row">
                 <p>{{question.rating}}</p>
             </div>
@@ -44,19 +47,21 @@
         </div>
         </div>
         {% for answer in page %}
-        <div class="row answer-container rounded">
+        <div class="row answer-container rounded" id="ans{{answer.id}}">
             <div class="col-xs-2 col-md-2 question-profile-container text-center container">
                 <div class="row">
                     <a href="{% url 'user_profile_page' answer.author.display_name %}">
                     <img class="question-pfp mx-auto d-block" src="{{ answer.author.profile_picture.url }}" alt="question-pfp">
                     </a>
                 </div>
+                {% if request.user.is_authenticated %}
                 <div class="row">
                     <div class="btn-group rating-btns" role="group" aria-label="Rating Buttons">
                       <button type="button" class="btn btn-outline-success">+</button>
                       <button type="button" class="btn btn-outline-danger">-</button>
                     </div>
                 </div>
+                {% endif %}
                 <div class="row">
                     <p>{{answer.rating}}</p>
                 </div>
@@ -82,12 +87,15 @@
         <div class="col-12 delimiter-line" style="opacity: 0"></div>
         {% include 'pagination.html' %}
         <div class="col-12 delimiter-line"></div>
-        {% if request.user.is_authenticated %}
         <div class="col-12 answer-form">
-                <div class="mb-3">
-                  <textarea class="form-control" style="resize:none" id="answer_area" rows="3" maxlength="300" placeholder="Type your suggestion here..."></textarea>
-                </div>
-                <button type="button" class="btn btn-outline-success custom-action">Post answer</button>
-        </div>
+        {% if request.user.is_authenticated %}
+            <form class="mb-3" method="post">
+              {% csrf_token %}
+              {% bootstrap_form form %}
+              <button type="submit" class="btn btn-outline-success custom-action">Post answer</button>
+            </form>
+        {% else %}
+            <p class="text-muted" style="float: right">Please log in to leave an answer.</p>
         {% endif %}
+        </div>
 {% endblock %}

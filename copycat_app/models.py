@@ -70,14 +70,14 @@ class QuestionManager(models.Manager):
 
 class AnswerManager(models.Manager):
     def useful(self, question):
-        return question.answers.order_by('-rating')
+        return question.answers.order_by('date_submitted', '-rating')
 
 
 class Profile(models.Model):
-    display_name = models.CharField(max_length=16, null=True)
+    display_name = models.CharField(max_length=32, null=True)
     profile_picture = models.ImageField(upload_to='profile_pictures',
-                                        default=os.path.join(BASE_DIR, 'static/img/pfp-default.png'))
-    rating = models.BigIntegerField(null=True)
+                                        default='profile_pictures/pfp-default.png')
+    rating = models.BigIntegerField(default=0)
 
     user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
 
@@ -94,7 +94,7 @@ class Tag(models.Model):
 class Question(models.Model):
     title = models.CharField(max_length=100, null=True)
     content = models.CharField(max_length=1000, null=True)
-    rating = models.BigIntegerField(null=True)
+    rating = models.BigIntegerField(default=0)
     date_submitted = models.DateTimeField(auto_now=True, null=True)
 
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='questions')
@@ -106,7 +106,7 @@ class Question(models.Model):
 class Answer(models.Model):
     content = models.CharField(max_length=500, null=True)
     is_correct = models.BooleanField(default=False)
-    rating = models.BigIntegerField(null=True)
+    rating = models.BigIntegerField(default=0)
     date_submitted = models.DateTimeField(auto_now=True, null=True)
 
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='answers')

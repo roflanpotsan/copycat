@@ -20,12 +20,14 @@
                     <img class="question-pfp mx-auto d-block" src='{{question.author.profile_picture.url}}' alt="question-pfp">
                 </a>
             </div>
+            {% if request.user.is_authenticated %}
             <div class="row">
                 <div class="btn-group rating-btns" role="group" aria-label="Rating Buttons">
                   <button type="button" class="btn btn-outline-success">+</button>
                   <button type="button" class="btn btn-outline-danger">-</button>
                 </div>
             </div>
+            {% endif %}
             <div class="row">
                 <p>{{ question.rating }}</p>
             </div>

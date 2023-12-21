@@ -12,15 +12,15 @@ python manage.py fill_db [ratio: int]
 
 Отчет о нагрузочном тестировании находится в файле 
 ```
-./ab_test_results.txt
+open ./ab_test_results.txt
 ```
 Конфиги gunicorn и nginx находятся в папке
 ```
-./configs
+cd ./configs
 ```
 Простой WSGI скрипт находится в папке
 ```
-./extras
+cd ./extras
 ```
 Креды администратора: admin:insecurepassword
 

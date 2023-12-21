@@ -1,16 +1,17 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.views.decorators.http import require_http_methods
-from django.core.paginator import Paginator
 from django.shortcuts import redirect
 from django.urls import reverse, resolve
-from copycat_app.models import Profile, Question, Answer, Tag, User
+from copycat_app.models import Profile, Question, Answer, Tag, QuestionRating, AnswerRating
 from django.core.paginator import Paginator
 from django.contrib.auth import logout as log_out, authenticate as auth, login as log_in
 from copycat_app.forms import LoginForm, SignupForm, QuestionForm, AnswerForm, ProfileForm
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth.decorators import login_required
-
+from django.db.models import Sum
+from django.http import JsonResponse
+from copycat.settings import REDIRECT_FIELD_NAME, LOGIN_URL
 
 # Create your views here.
 
@@ -82,7 +83,7 @@ def logout(request):
 
 
 @require_http_methods(["GET", "POST"])
-@login_required(redirect_field_name='continue', login_url='/login')
+@login_required(redirect_field_name=REDIRECT_FIELD_NAME, login_url=LOGIN_URL)
 @csrf_protect
 def ask(request):
     if request.method == "GET":
@@ -115,7 +116,11 @@ def question(request, question_id):
             answer_form = AnswerForm(request.POST)
             if answer_form.is_valid():
                 answer = answer_form.save(request.user.profile, question_)
-                return redirect((reverse(question, kwargs={'question_id': question_id})) + f'?page={len(answers) // 10 + 1}#ans{answer.id - 1}')
+                page_num = len(answers) // 10
+                if len(answers) % 10 != 0:
+                    page_num += 1
+                return redirect(
+                    (reverse(question, kwargs={'question_id': question_id})) + f'?page={page_num}#answer_{answer.id}')
             else:
                 answer_form.add_error(None, "Invalid input.")
         else:
@@ -134,13 +139,12 @@ def hot(request):
 
 @require_http_methods(["GET", "POST"])
 @csrf_protect
-@login_required(redirect_field_name='continue', login_url='/login')
+@login_required(redirect_field_name=REDIRECT_FIELD_NAME, login_url=LOGIN_URL)
 def settings(request):
     if request.method == "GET":
-        profile_form = ProfileForm()
+        profile_form = ProfileForm(request=request)
     if request.method == "POST":
-        profile_form = ProfileForm(request.POST, request.FILES)
-        print(request.FILES)
+        profile_form = ProfileForm(request.POST, request.FILES, request=request)
         if profile_form.is_valid():
             profile_form.save(request.user)
     return render(request, "settings.html", {'form': profile_form})
@@ -150,5 +154,67 @@ def page_not_found(request, exception):
     return HttpResponseNotFound(render(request, '404.html'))
 
 
-def profile(request, username):
-    raise Http404()
+def profile(request, display_name):
+    user_profile = Profile.objects.specific(display_name)
+    if not user_profile:
+        raise Http404()
+    return render(request, "profile.html", {'profile': user_profile})
+
+
+@login_required(redirect_field_name=REDIRECT_FIELD_NAME, login_url=LOGIN_URL)
+@csrf_protect
+@require_http_methods(["POST"])
+def rate(request):
+    rating_model = request.POST.get('model')
+    user_profile = request.user.profile
+    model_id = request.POST.get('id')
+    rating_type = 1 if request.POST.get('type') else -1
+    if model_id:
+        if rating_model == 'question':
+            model = Question.objects.specific(model_id)
+            prev_rating = QuestionRating.objects.specific(user_profile, model)
+        elif rating_model == 'answer':
+            model = Answer.objects.specific(model_id)
+            prev_rating = AnswerRating.objects.specific(user_profile, model)
+        else:
+            return JsonResponse({'error': 'Invalid parameters'})
+
+        if model.author == user_profile:
+            return JsonResponse({'error': f'You can not rate your own {rating_model}.'})
+        if prev_rating and prev_rating.type == rating_type:
+            return JsonResponse({'error': f'You have already rated this {rating_model} this way.'})
+        elif prev_rating:
+            model.rating -= prev_rating.type
+            model.author.rating -= prev_rating.type
+            prev_rating.delete()
+        if rating_model == 'question':
+            new_rating = QuestionRating.objects.create(profile=user_profile, question=model, type=rating_type)
+        else:
+            new_rating = AnswerRating.objects.create(profile=user_profile, question=model, type=rating_type)
+        new_rating.save()
+        model.rating += rating_type
+        model.author.rating += rating_type
+        model.save()
+        model.author.save()
+        return JsonResponse({'success': f'Updated {rating_model} rating.',
+                             'new_rating': model.rating})
+
+
+@login_required(redirect_field_name=REDIRECT_FIELD_NAME, login_url=LOGIN_URL)
+@csrf_protect
+@require_http_methods(["POST"])
+def correct(request):
+    answer_id = request.POST.get('id')
+    if answer_id:
+        specific_answer = Answer.objects.specific(answer_id)
+        specific_question = specific_answer.question
+        if specific_question.author != request.user.profile:
+            return JsonResponse({'error': 'You can not mark correct answer for question that is not yours.'})
+        prev_correct = specific_question.answers.filter(is_correct=True).first()
+        if prev_correct:
+            prev_correct.is_correct = False
+            prev_correct.save()
+        specific_answer.is_correct = True
+        specific_answer.save()
+        return JsonResponse({'success': f'new correct answer: {answer_id}',
+                             'new_id': answer_id})

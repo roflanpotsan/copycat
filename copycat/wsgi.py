@@ -8,9 +8,11 @@ https://docs.djangoproject.com/en/4.2/howto/deployment/wsgi/
 """
 
 import os
+from wsgiref.simple_server import make_server
 
 from django.core.wsgi import get_wsgi_application
 
 os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'copycat.settings')
 
 application = get_wsgi_application()
+

@@ -24,9 +24,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-mq*37#jf&v*_v&8u4=a@&sxr1dw@o)hep-tllu!w)sg6fg!q1x'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['192.168.50.49', 'localhost', '*']
 
 
 # Application definition
@@ -127,12 +127,12 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-if DEBUG:
-    STATICFILES_DIRS = [
-        BASE_DIR / 'static',
-    ]
-else:
-    STATIC_ROOT = BASE_DIR / 'static'
+# if DEBUG:
+#     STATICFILES_DIRS = [
+#         BASE_DIR / 'static',
+#     ]
+# else:
+#     STATIC_ROOT = BASE_DIR / 'static'
 STATIC_URL = '/static/'
 MEDIA_ROOT = BASE_DIR / 'uploads'
 MEDIA_URL = '/uploads/'
@@ -142,3 +142,5 @@ MEDIA_URL = '/uploads/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 FAST_SIDE_BLOCK = True  # change this for genuine side-block
+LOGIN_URL = '/login'
+REDIRECT_FIELD_NAME = 'continue'

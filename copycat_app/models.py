@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
-from uuid import uuid4
 from copycat.settings import os, Path, FAST_SIDE_BLOCK
-from datetime import date, timedelta
+from datetime import timedelta, datetime
 from django.utils import timezone
 
 # Create your models here.
@@ -33,6 +32,9 @@ class ProfileManager(models.Manager):
                 profiles[answer.author] += answer.rating
         profiles = [profile for profile in sorted(profiles, key=profiles.get, reverse=True)][:10]
         return profiles
+
+    def specific(self, display_name):
+        return Profile.objects.filter(display_name=display_name).first()
 
 
 class TagManager(models.Manager):
@@ -72,6 +74,20 @@ class AnswerManager(models.Manager):
     def useful(self, question):
         return question.answers.order_by('date_submitted', '-rating')
 
+    def specific(self, id_):
+        return Answer.objects.filter(id=id_).first()
+
+
+class QuestionRatingManager(models.Manager):
+    def specific(self, profile, question):
+        return QuestionRating.objects.filter(profile=profile, question=question).first()
+
+
+class AnswerRatingManager(models.Manager):
+    def specific(self, profile, answer):
+        return AnswerRating.objects.filter(profile=profile, answer=answer).first()
+
+
 
 class Profile(models.Model):
     display_name = models.CharField(max_length=32, null=True)
@@ -95,7 +111,7 @@ class Question(models.Model):
     title = models.CharField(max_length=100, null=True)
     content = models.CharField(max_length=1000, null=True)
     rating = models.BigIntegerField(default=0)
-    date_submitted = models.DateTimeField(auto_now=True, null=True)
+    date_submitted = models.DateTimeField(auto_now=False, default=timezone.now())
 
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='questions')
     tags = models.ManyToManyField(Tag)
@@ -107,7 +123,7 @@ class Answer(models.Model):
     content = models.CharField(max_length=500, null=True)
     is_correct = models.BooleanField(default=False)
     rating = models.BigIntegerField(default=0)
-    date_submitted = models.DateTimeField(auto_now=True, null=True)
+    date_submitted = models.DateTimeField(auto_now=False, default=timezone.now())
 
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='answers')
     question = models.ForeignKey(Question, on_delete=models.CASCADE, null=True, related_name='answers')
@@ -116,21 +132,25 @@ class Answer(models.Model):
 
 
 class QuestionRating(models.Model):
-    question = models.ForeignKey(Question, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    type = models.BooleanField(null=True)  # 0 - negative; 1 - positive
+    question = models.ForeignKey(Question, on_delete=models.CASCADE, related_name='question_ratings')
+    profile = models.ForeignKey(Profile, null=True, on_delete=models.CASCADE, related_name='question_ratings')
+    type = models.IntegerField(default=0)  # -1 - negative; 1 - positive
+
+    objects = QuestionRatingManager()
 
     class Meta:
-        unique_together = ['user', 'question']
+        unique_together = ['profile', 'question']
 
 
 class AnswerRating(models.Model):
-    answer = models.ForeignKey(Question, on_delete=models.CASCADE,)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    type = models.BooleanField(null=True)  # 0 - negative; 1 - positive
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name='answer_ratings')
+    profile = models.ForeignKey(Profile, null=True, on_delete=models.CASCADE, related_name='answer_ratings')
+    type = models.IntegerField(default=0)  # -1 - negative; 1 - positive
+
+    objects = AnswerRatingManager()
 
     class Meta:
-        unique_together = ['user', 'answer']
+        unique_together = ['profile', 'answer']
 
 
 

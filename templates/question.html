@@ -5,23 +5,23 @@
 <title>{{question.title}}</title>
 {% endblock %}
 {% block content %}
-        <div class="row question-container-single">
+        <div class="row question-container-single" id="question_{{question.id}}">
         <div class="col-xs-2 col-md-2 question-profile-container text-center container">
             <div class="row">
                 <a href="{% url 'user_profile_page' question.author.display_name %}">
                 <img class="question-pfp mx-auto d-block" src='{{question.author.profile_picture.url}}' alt="question-pfp">
                 </a>
             </div>
-            {% if request.user.is_authenticated %}
+            {% if request.user.is_authenticated and question.author != request.user.profile %}
             <div class="row">
                 <div class="btn-group rating-btns" role="group" aria-label="Rating Buttons">
-                  <button type="button" class="btn btn-outline-success">+</button>
-                  <button type="button" class="btn btn-outline-danger">-</button>
+                  <button type="button" class="btn btn-outline-success rate-up">+</button>
+                  <button type="button" class="btn btn-outline-danger rate-down">-</button>
                 </div>
             </div>
             {% endif %}
             <div class="row">
-                <p>{{question.rating}}</p>
+                <p class="question-rating">{{question.rating}}</p>
             </div>
         </div>
         <div class="col-xs-10 col-md-10 question">
@@ -47,23 +47,23 @@
         </div>
         </div>
         {% for answer in page %}
-        <div class="row answer-container rounded" id="ans{{answer.id}}">
+        <div class="row answer-container rounded" id="answer_{{answer.id}}">
             <div class="col-xs-2 col-md-2 question-profile-container text-center container">
                 <div class="row">
                     <a href="{% url 'user_profile_page' answer.author.display_name %}">
                     <img class="question-pfp mx-auto d-block" src="{{ answer.author.profile_picture.url }}" alt="question-pfp">
                     </a>
                 </div>
-                {% if request.user.is_authenticated %}
+                {% if request.user.is_authenticated and answer.author != request.user.profile %}
                 <div class="row">
                     <div class="btn-group rating-btns" role="group" aria-label="Rating Buttons">
-                      <button type="button" class="btn btn-outline-success">+</button>
-                      <button type="button" class="btn btn-outline-danger">-</button>
+                      <button type="button" class="btn btn-outline-success rate-up">+</button>
+                      <button type="button" class="btn btn-outline-danger rate-down">-</button>
                     </div>
                 </div>
                 {% endif %}
                 <div class="row">
-                    <p>{{answer.rating}}</p>
+                    <p class="answer-rating">{{answer.rating}}</p>
                 </div>
             </div>
             <div class="col-xs-10 col-md-10 question">
@@ -76,9 +76,14 @@
                 <div class="row">
                     <p>{{answer.content}}</p>
                 </div>
+
                 <div class="row">
                     {% if answer.is_correct %}
-                        <img class="question-pfp" src="{% static 'img/tick.png' %}">
+                        <img class="tick" src="{% static 'img/tick.png' %}">
+                    {% else %}
+                    {% if request.user.profile == question.author %}
+                        <button class="btn btn-outline-secondary mb-3 mark-correct">Mark correct.</button>
+                    {% endif %}
                     {% endif %}
                 </div>
             </div>

@@ -1,6 +1,13 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from copycat_app.models import Profile, User, Tag, Question, Answer
+from django.core.files.images import get_image_dimensions
+import re
+
+
+def has_special_characters(str_input):
+    pattern = re.compile(r'[<>?!^\'"#$%&*()@+=`{|}~]')
+    return pattern.search(str_input)
 
 
 class LoginForm(forms.Form):
@@ -19,11 +26,15 @@ class SignupForm(forms.Form):
     def clean_username(self):
         if User.objects.filter(username=self.cleaned_data['username']).first():
             raise ValidationError("This username is already taken.")
+        if has_special_characters(self.cleaned_data['username']):
+            raise ValidationError("Username can not contain special characters.")
         return self.cleaned_data['username']
 
     def clean_display_name(self):
         if Profile.objects.filter(display_name=self.cleaned_data['display_name']).first():
             raise ValidationError("This display name is already taken.")
+        if has_special_characters(self.cleaned_data['display_name']):
+            raise ValidationError("Display name can not contain special characters.")
         return self.cleaned_data['display_name']
 
     def clean_confirm_password(self):
@@ -55,12 +66,13 @@ class QuestionForm(forms.Form):
         for tag in tags:
             if not 3 <= len(tag) <= 12:
                 raise ValidationError("Tag length must be 3 to 12 symbols.")
+            if has_special_characters(tag):
+                raise ValidationError("Tags can not contain special characters.")
         return tags
 
     def save(self, author):
 
         tags = self.cleaned_data.pop('tags')
-        print(self.cleaned_data)
         question_tags = []
         for tag in tags:
             existing_tag = Tag.objects.filter(text=tag).first()
@@ -89,6 +101,9 @@ class AnswerForm(forms.Form):
 
 
 class ProfileForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop("request")
+        super(ProfileForm, self).__init__(*args, **kwargs)
     email = forms.CharField(required=False, label="Email:", max_length=32,
                             widget=forms.TextInput(attrs={'placeholder': 'Enter new email'}))
     display_name = forms.CharField(required=False, label="Display name:", max_length=32,
@@ -98,13 +113,23 @@ class ProfileForm(forms.Form):
     def clean_display_name(self):
         display_name = self.cleaned_data.get('display_name')
         if display_name:
-            if Profile.objects.filter(display_name=display_name).first():
+            profile = Profile.objects.filter(display_name=display_name).first()
+            if profile and profile != self.request.user.profile:
                 raise ValidationError("This display name is taken")
+            if has_special_characters(display_name):
+                raise ValidationError("Display name can not contain special characters.")
             else:
                 return display_name
 
+    def clean_profile_picture(self):
+        image = self.cleaned_data.get('profile_picture')
+        if image:
+            w, h = get_image_dimensions(image)
+            if w > 800 or h > 800:
+                raise ValidationError("Max image size is 800 by 800 px.")
+            return image
+
     def save(self, user):
-        print(self.cleaned_data)
         if self.cleaned_data.get('email'):
             user.email = self.cleaned_data['email']
         if self.cleaned_data.get('display_name'):

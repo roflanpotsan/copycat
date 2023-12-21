@@ -44,7 +44,7 @@ class Command(BaseCommand):
             Profile(
                 user=user,
                 display_name=fake.user_name()[:10] + uuid4().hex[:6],
-                rating=randrange(0, ratio),
+                rating=0,
                 profile_picture=f'profile_pictures/{randrange(1,10)}.jpeg'
             ) for user in tqdm(users)
         ]
@@ -64,7 +64,7 @@ class Command(BaseCommand):
             Question(
                 title=fake.sentence(nb_words=6),
                 content=fake.paragraph(nb_sentences=9),
-                rating=randrange(0, ratio),
+                rating=0,
                 author=choice(profiles),
             ) for _ in tqdm(range(ratio * 10))
         ]
@@ -77,7 +77,7 @@ class Command(BaseCommand):
         answers = [
             Answer(
                 content=fake.paragraph(nb_sentences=5),
-                rating=randrange(0, ratio),
+                rating=0,
                 author=choice(profiles),
                 question=choice(questions)
             ) for _ in tqdm(range(ratio * 100))

@@ -1,5 +1,6 @@
 html{
     height: 100%;
+      scroll-padding-top: 0.1vh;
 }
 body{
     position: relative;
@@ -101,4 +102,20 @@ body{
 .rating-btns{
     margin: auto;
     max-width: 100px;
+}
+.tick{
+    max-width: 100px;
+}
+.mark-correct{
+    max-width: 25%;
+}
+.profile-pfp{
+    min-height: 200px;
+    min-width: 200px;
+    max-width: 200px;
+    padding: 10px;
+    border-radius: 20px;
+}
+.profile-icon{
+    max-width: 30px;
 }

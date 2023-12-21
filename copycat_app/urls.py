@@ -15,9 +15,10 @@ urlpatterns = [
     path('hot/', views.hot, name="top_questions_page"),
     path('admin/', admin.site.urls, name="admin_panel"),
     path('logout/', views.logout, name="logout_page"),
-    path('profile/id/<str:username>', views.profile, name="user_profile_page"),
-    re_path(r'^uploads/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
-    re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
+    path('profile/id/<str:display_name>', views.profile, name="user_profile_page"),
+    path('rate/', views.rate, name='api_rate'),
+    path('correct/', views.correct, name='api_correct'),
+    # re_path(r'^static/(?P<path>.*)$', serve, {'document_root': settings.STATIC_ROOT}),
 ]
 
 handler404 = "copycat_app.views.page_not_found"

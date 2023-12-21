@@ -10,6 +10,18 @@ python manage.py fill_db [ratio: int]
 ```
 Все команды выполняются из корневой директории.
 
+Отчет о нагрузочном тестировании находится в файле 
+```
+./ab_test_results.txt
+```
+Конфиги gunicorn и nginx находятся в папке
+```
+./configs
+```
+Простой WSGI скрипт находится в папке
+```
+./extras
+```
 Креды администратора: admin:insecurepassword
 
 <h2>Main Page</h2>

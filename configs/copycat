@@ -1,0 +1,43 @@
+upstream backend {
+	server 127.0.0.1:8000;
+}
+server{
+	listen 80 default_server;
+	server_name copycat.com;
+
+    gzip on;
+    gzip_types *;
+    gzip_proxied no-cache no-store private expired auth;
+	add_header Pragma "public";
+	add_header Cache-Control "public";
+	client_max_body_size 10M;
+
+	error_page 404 /nginx404.html;
+
+	error_log /Users/roflanpotsan/workspace/copycat/logs/copycat_error.log;
+	access_log /Users/roflanpotsan/workspace/copycat/logs/copycat_access.log;
+
+	location = /nginx404.html {
+		root /Users/roflanpotsan/workspace/copycat/templates/;
+		internal;
+	}
+	location /static/ {
+		expires 15d;
+		root /Users/roflanpotsan/workspace/copycat/;
+	}
+	location /uploads/ {
+		expires 1d;
+		root /Users/roflanpotsan/workspace/copycat/;
+	}
+	location / {
+		location ~* \.(jpe?g|png|gif|ico|js|css|html)$ {
+			expires 15d;
+			root /Users/roflanpotsan/workspace/copycat/static/;
+			try_files $uri /img/$uri /css/$uri /js/$uri /html/$uri =404;
+		}
+		proxy_pass http://backend;
+		proxy_set_header Host $host;
+		proxy_cache mycache;
+		proxy_cache_valid 200 302 10s;
+	}
+}
